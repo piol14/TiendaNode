@@ -1,3 +1,5 @@
+*.odp#
+*.odt#
 # Logs
 logs
 *.log

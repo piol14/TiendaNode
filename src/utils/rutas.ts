@@ -5,6 +5,7 @@ const base = dirname(fileURLToPath(import.meta.url));
 
 export const rutas ={
 base : join (base, '..'), // /home/
-views : join (base, '..', 'views')
+views : join (base, '..', 'views'),
+public: join (base, '..', 'public'),
 }
 

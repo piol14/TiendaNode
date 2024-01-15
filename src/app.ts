@@ -1,41 +1,43 @@
-import express from "express";
-import { rutas } from './utils/rutas.js';
+import express, {urlencoded} from "express";
 
-console.log('----------------------------------------------------------------');
-console.log('Bienvenido a mi app');
+import { rutas } from "./utils/rutas.js";
+import { adminRouter } from "./routes/adminRoutes.js";
+import { shopRouter } from "./routes/shopRoutes.js";
 
-const port = 3000;
+console.log('------------------------------------------------------------_---');
+console.log("Bienvenido a mi app");
+
+const port =  3000;
 
 const app = express();
 
+app.use(urlencoded({extended: false})); //Middleware para procesar los campos que me envíen por HTTP body-parser
+app.use(express.static(rutas.public)); //Mia rutas contenido estáticos .css .js
+app.disable('x-powered-by');
 app.set('view engine', 'ejs');
-app.set('views', rutas.views);
+app.set('views',rutas.views); //CAMBIAR
 
-// Controladores para responder a las peticiones por Http
-app.get('/saludo', (req, res) => {
-    res.render('prueba',{nombre:'Rayan goslink'});
-});
+app.use('/admin', adminRouter); //Las rutas empiezan por /admin
+app.use('/', shopRouter);
+//Controladores para responder a las peticiones por HTTP
 
-app.get('/automovil', (req, res, next) => {
-    res.send('Pasamos por el primer middleware app.get');
-    res.redirect('/coche');
-});
 
-app.use('/coche', (req, res, next) => {
-    console.log('Peticion recibida');
+
+
+app.use('/coche',(req, res, next) => {
+    console.log("Ha llegado una petición");
     next();
 });
-
-app.use('/coche', (req, res, next) => {
-    console.log('Estamos en el segundo middleware');
-    res.send({ mensaje: 'ok' });
+app.use('/coche', (req,res,next) => {
+    console.log("Estamos en el segundo middleware");
+    res.send({"message":"ok"});
 });
 
-app.use('/', (req, res, next) => {
-    console.log('Middleware del final');
-    res.status(404).send({ mensaje: 'No se ha encontrado la ruta' });
-});
+app.use('/', (req,res,next)=> {
+    console.log("Middleware del final");
+    res.status(404).send({'error':'Ruta no encontrada'});
+})
 
 // FIN 
 app.listen(port);
-console.log('Servidor de la app en marcha');
+console.log("Servidor de la app en marcha");

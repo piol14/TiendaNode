@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 export const adminRouter = Router();
-
+export const productos:{ title: string}[]= [];
 
 //todas las rutas que llegan aquí empiezan por /admin
 
@@ -13,8 +13,10 @@ adminRouter.get('/add-product',(req,res,next)=>{
 });
 
 adminRouter.post('/add-product',(req, res, next) => {
+    const title = req.body.title;
     if(req.body.title){
         console.log('Ha llegado el siguiente producto: ',req.body.title);
     }
+    productos.push({title: title});
     res.redirect('/');
 });

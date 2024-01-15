@@ -36,7 +36,7 @@ app.use('/coche', (req,res,next) => {
 app.use('/', (req,res,next)=> {
     console.log("Middleware del final");
     res.status(404).send({'error':'Ruta no encontrada'});
-})
+}) 
 
 // FIN 
 app.listen(port);

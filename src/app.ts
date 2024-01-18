@@ -3,6 +3,7 @@ import express, {urlencoded} from "express";
 import { rutas } from "./utils/rutas.js";
 import { adminRouter } from "./routes/adminRoutes.js";
 import { shopRouter } from "./routes/shopRoutes.js";
+import path from "path";
 
 console.log('------------------------------------------------------------_---');
 console.log("Bienvenido a mi app");
@@ -24,20 +25,13 @@ app.use('/', shopRouter);
 
 
 
-app.use('/coche',(req, res, next) => {
-    console.log("Ha llegado una petición");
-    next();
-});
-app.use('/coche', (req,res,next) => {
-    console.log("Estamos en el segundo middleware");
-    res.send({"message":"ok"});
-});
 
 app.use('/', (req,res,next)=> {
     console.log("Middleware del final");
-    res.status(404).send({'error':'Ruta no encontrada'});
-}) 
+   res.render('404.ejs',{pageTitle:'Página no encontrada', path: '/404'});
 
+});
 // FIN 
 app.listen(port);
 console.log("Servidor de la app en marcha");
+console.log( `Servidor disponible en http://localhost:${port}`);

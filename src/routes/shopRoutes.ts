@@ -10,3 +10,4 @@ shopRouter.get('/',getIndex);
 shopRouter.get('/products',getProducts);
 shopRouter.get('/products/:productId',getProductById);
 shopRouter.get('/saludo', getSaludo);
+shopRouter.get('/saludo/',getSaludo);

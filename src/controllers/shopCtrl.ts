@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import { Product } from "../models/Product.js";
+import { Cart } from "../models/Cart.js";
 
 
 export const getIndex = (req: Request,res: Response,next: NextFunction) => {  
@@ -20,6 +21,13 @@ export const getProductById = (req: Request,res: Response,next: NextFunction) =>
         res.status(404).render('404.ejs');    
     }
 };
+export const postCart = (req: Request,res: Response,next: NextFunction)=> {
+const productId = +req.body.productId;
+console.log('postCard: Añadimos al carro el producto'+productId);
+Cart.addProduct(productId, 1);
+res.render('/cart');
+}
+
 
 export const getSaludo = (req: Request,res: Response,next: NextFunction)=>{
     res.render('prueba',{nombre: 'Ico'});

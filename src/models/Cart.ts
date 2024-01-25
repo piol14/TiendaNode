@@ -1,3 +1,5 @@
+import { deleteProduct } from "../controllers/adminCtrl.js";
+
 export class CartItem {
 
     constructor(
@@ -20,7 +22,26 @@ cartItems[index]= new CartItem(id ,cartItems[index].qty+qty);
         cartItems.push(new CartItem(id, qty));
 
     }
-
+    
 }
-
+static getCart (){
+    return cartItems;
+}
+static deleteProduct( id:number){
+    const index= cartItems.findIndex(ci => ci.id === id);
+    if(index>=0){
+        cartItems.splice(index,1);
+    }
+}
+static decreasePR(id: number) {
+    const index = cartItems.findIndex(ci => ci.id === id);
+    if (index >= 0) {
+        const qty = cartItems[index].qty;
+        if (qty > 1) {
+            cartItems[index] = new CartItem(id, qty - 1);
+        } else {
+            cartItems.splice(index, 1);
+        }
+    }
+}
 }

@@ -29,6 +29,14 @@
                             <input type="hidden" value="<%= it.id %>" name="productId">
                             <button class="btn" type="submit">Delete</button>
                         </form>
+                        <form action="/cart-increase-item" method="post">
+                            <input type="hidden" value="<%= it.id %>" name="productId">
+                            <button class="btn" type="submit">+</button>
+                        </form>
+                        <form action="/cart-decrease-item" method="post">
+                            <input type="hidden" value="<%= it.id %>" name="productId">
+                            <button class="btn" type="submit">-</button>
+                        </form>
                     </td>
                 </tr>
             <% } %>

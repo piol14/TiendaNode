@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "clase",
   "main": "app.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "node ./dist/app.js",
     "build": "./node_modules/.bin/tsc -w",
@@ -31,8 +31,10 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "dotenv": "^16.4.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "mongodb": "^6.3.0",
     "save-dev": "^0.0.1-security"
   }
 }

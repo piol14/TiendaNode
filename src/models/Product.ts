@@ -1,10 +1,14 @@
+import { ObjectId } from "mongodb";
+import { collections } from "../services/databaseService.js";
+
  const products: Product[] = [];
     
 
 export class Product {
 
-    
+    public _id?: ObjectId;
     constructor(
+        
         public title: string, 
         public imageURL: string, 
         public description: string, 
@@ -12,8 +16,22 @@ export class Product {
         public id? : number) {
      
     }
-    save(){
-        if(!this.id){
+    async save(){
+        if(this._id){
+
+            const result = await collections.products?.updateOne({_id: this._id}, {$set: this});
+            result
+            ? console.log(`Producto ${this.title} actualizado`)
+            : console.log("Error al actualizar el producto");
+        }
+            const result = await  collections.products?.insertOne(this);
+           result 
+            ? console.log(`Producto ${this.title} insertado con el id ${result.insertedId}`)
+            : console.log("Error al insertar el producto");
+            return this;
+        
+         
+       /*  if(!this.id){
             this.id=Math.round(Math.random()*100000000000)
             products.push(this);
         }
@@ -22,7 +40,7 @@ export class Product {
             if(this.id>=0){
                 products[index]=this;
             }
-        }
+        } */
     }
 
     static delete(productId: number): Product | undefined {
@@ -32,8 +50,8 @@ export class Product {
         }
         return undefined;
     }
-    static fetchAll(){
-        return products;
+    static async fetchAll(){
+        return  await collections.products?.find().toArray();
     }
     static findById(productId: number): Product
     {

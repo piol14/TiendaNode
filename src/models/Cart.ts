@@ -1,4 +1,3 @@
-import { deleteProduct } from "../controllers/adminCtrl.js";
 
 export class CartItem {
 

@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+ import { ObjectId } from "mongodb";
 import { collections } from "../services/databaseService.js";
 
  const products: Product[] = [];
@@ -16,6 +16,8 @@ export class Product {
         public id? : number) {
      
     }
+
+    
     async save(){
         if(this._id){
 
@@ -40,8 +42,8 @@ export class Product {
             if(this.id>=0){
                 products[index]=this;
             }
-        } */
-    }
+        }  */
+ }
 
     static delete(productId: number): Product | undefined {
         const index = products.findIndex(p => p.id === productId);
@@ -53,10 +55,9 @@ export class Product {
     static async fetchAll(){
         return  await collections.products?.find().toArray();
     }
-    static findById(productId: number): Product
-    {
-        return products.find(p => p.id === productId)!;
-    }
+    static async findById(productId: string) {
+        return await collections.products?.findOne({ _id: new ObjectId(productId) });
+      }
 
 static deletebyproductId(productId: number)
 {
@@ -67,4 +68,4 @@ static deletebyproductId(productId: number)
     }
     
 }
-}
+} 

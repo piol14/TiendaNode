@@ -14,9 +14,10 @@ export class Product {
         public description: string, 
         public price: number,
         public id? : number) {
-     
+     if (id) {
+        this._id = new ObjectId(id);
     }
-
+        }
     
     async save(){
         if(this._id){
@@ -25,25 +26,18 @@ export class Product {
             result
             ? console.log(`Producto ${this.title} actualizado`)
             : console.log("Error al actualizar el producto");
-        }
+        }else {
             const result = await  collections.products?.insertOne(this);
            result 
             ? console.log(`Producto ${this.title} insertado con el id ${result.insertedId}`)
             : console.log("Error al insertar el producto");
             return this;
-        
-         
-       /*  if(!this.id){
-            this.id=Math.round(Math.random()*100000000000)
-            products.push(this);
         }
-        else {
-            const index = products.findIndex(p=>p.id===this.id);
-            if(this.id>=0){
-                products[index]=this;
-            }
-        }  */
- }
+    }
+         
+
+        
+ 
 
     static delete(productId: number): Product | undefined {
         const index = products.findIndex(p => p.id === productId);

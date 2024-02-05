@@ -7,7 +7,7 @@ import { User } from '../models/User.js';
 export const collections:{
     products? : mongoDB.Collection<Product>,
     users? : mongoDB.Collection<User>
-
+    orders? : mongoDB.Collection<Order>
 }= {};
 
 

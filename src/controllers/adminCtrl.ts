@@ -16,14 +16,14 @@ export const getAddProduct = (req: Request,res: Response,next: NextFunction)=>{
 };
 export const postAddProduct = async (req: Request, res: Response, next: NextFunction) => {
     const title = req.body.title;
-    const imageUrl =  req.body.imageUrl;
+    const imageURL =  req.body.imageURL;
     const description = req.body.description;
     console.log(description);
     const price = +req.body.price;
     if(req.body.title){
         const producto = new Product(
             title,
-            imageUrl,
+            imageURL,
             description,
             price
         );
@@ -56,15 +56,19 @@ export const getEditProduct = async (req: Request,res: Response,next: NextFuncti
 export const postEditProduct = async (req: Request,res: Response,next: NextFunction)=>{
     const productId = req.body.productId;
     const title = req.body.title;
-    const imageUrl = req.body.imageUrl;
+    const imageURL = req.body.imageURL;
     const description = req.body.description;
     const price =  +req.body.price;
-    const product = new Product(title, imageUrl, description, price, productId);
+    const product = new Product(title, imageURL, description, price, productId);
     console.log(product);
     await product.save();
     res.redirect('/admin/products');
 }
+export const deleteProduct = async (req: Request, res: Response, next: NextFunction) => {
+    const productId = req.body.productId; 
+        const deletedProduct = await Product.deleteById(productId);
+        res.redirect('/admin/products');
+        console.log("Producto borrado");
+    }
+
 //export const postDeleteProduct //Controller para elimnar un producto
-
-
-

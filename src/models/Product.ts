@@ -53,13 +53,19 @@ export class Product {
         return await collections.products?.findOne({ _id: new ObjectId(productId) });
       }
 
-static deletebyproductId(productId: number)
-{
-    console.log('entra en deletebyproductId');
-    const index = products.findIndex(p => p.id === productId);
-    if (index >= 0) {
-       products.splice(index, 1)[0];
+      static async deleteById(productId: string) {
+        try {
+            const result = await collections.products?.deleteOne({ _id: new ObjectId(productId) });
+            if (result && result.deletedCount === 1) {
+                console.log(`Producto eliminado exitosamente con ID: ${productId}`);
+                return true;
+            } else {
+                console.log(`No se pudo encontrar el producto con ID: ${productId}`);
+                return false;
+            }
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+            return false;
+        }
     }
-    
-}
 } 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAddProduct, getProducts, postAddProduct , getEditProduct, postEditProduct} from "../controllers/adminCtrl.js";
+import { getAddProduct, getProducts, postAddProduct , getEditProduct, postEditProduct, deleteProduct} from "../controllers/adminCtrl.js";
 
 export const adminRouter = Router();
 /* 
@@ -20,5 +20,4 @@ adminRouter.get('/add-product/:productId',getEditProduct);
 // Ruta para agregar un nuevo producto
 adminRouter.post('/add-product', postAddProduct);
 adminRouter.post('/edit-product', postEditProduct);
-
-//adminRouter.post('/delete-product', deleteProduct); 
+adminRouter.post('/delete-product', deleteProduct);//adminRouter.post('/delete-product', deleteProduct); 

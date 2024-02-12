@@ -1,0 +1,40 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/form.css">
+<link rel="stylesheet" href="/css/events.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <form class="event-form" 
+            action="/admin/<% if(editing) { %>edit-event<% } else{ %>add-event<% }%>" 
+            method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value="<% if(editing) {%><%=event.title%><%}%>">
+            </div>
+            <div class="form-control">
+                <label for="imageURL">Image URL</label>
+                <input type="text" name="imageURL" id="imageURL" value="<% if(editing) {%><%=event.imageURL%><%}%>">
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" cols="30" rows="5"><% if(editing) {%><%=event.description%><%}%></textarea>
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input type="number" name="price" id="price" step="0.01" value="<% if(editing) {%><%=event.price%><%}%>">
+            </div>
+            <div class="form-control">
+                <label for="fecha">fecha</label>
+                <input type="fecha" name="fecha" id="fecha" value="<% if(editing) {%><%=event.fecha%><%}%>">
+            </div>
+            <button class="btn" type="submit">
+                <% if (editing) { %> Update <% } else { %> Add <%  } %> Event
+            </button>
+            <% if(editing) { %> 
+                <input type="hidden" name="eventId" value="<%= event._id %>">
+            <% } %>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

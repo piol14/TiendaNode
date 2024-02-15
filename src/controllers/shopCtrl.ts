@@ -23,7 +23,9 @@ export const getProductById = async (req: Request, res: Response, next: NextFunc
 
 export const getCart = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body.user as User;
+    console.log(user);
     const items = await user.getCart();
+    console.log(items);
     res.status(200).json({ message: "Success", cartItems: items });
 };
 

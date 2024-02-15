@@ -1,101 +1,68 @@
 import { NextFunction, Request, Response } from "express";
-
 import { Product } from "../models/Product.js";
 import { User } from "../models/User.js";
 
-
-
-export const getIndex = (req: Request,res: Response,next: NextFunction) => {  
-    res.render('shop/index', {pageTitle:'Tienda', path:'/'});
+export const getIndex = (req: Request, res: Response, next: NextFunction) => {  
+    res.status(200).json({ pageTitle: 'Tienda', path: '/' });
 };
 
-export const getProducts = async (req: Request,res: Response,next: NextFunction) => {  
-    res.render('shop/product-list', 
-    {
-        pageTitle:'Listducta Productos', 
-        path:'/products', 
-        prods: await Product.fetchAll()
-    });
-};  
+export const getProducts = async (req: Request, res: Response, next: NextFunction) => {  
+    const products = await Product.fetchAll();
+    res.status(200).json({ message: "Success", products: products });
+};
 
-export const getProductById = async (req: Request,res: Response,next: NextFunction) => { 
+export const getProductById = async (req: Request, res: Response, next: NextFunction) => { 
     const productId = req.params.productId; 
-    console.log(productId)
     const product = await Product.findById(productId);
-    if(product){
-         res.render('shop/product-detail', {pageTitle:product.title, path:'', product: product});
-     }else{
-         res.status(404).render('404.ejs',{pageTitle: 'Producto No Encontrado',path:''});    
-     }
+    if (product) {
+        res.status(200).json({ message: "Success", product: product });
+    } else {
+        res.status(404).json({ message: "Product not found" });
+    }
 };
-export const getCart = async (req: Request,res: Response,next: NextFunction)=>{
+
+export const getCart = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.body.user as User;
     const items = await user.getCart();
-    //console.log(items);
-    res.render('shop/cart',{
-                pageTitle: 'Carro de la compra',
-                path: '/cart',
-                items: items,
-            })
-}
-
-
-export const postCart = async (req: Request,res: Response,next: NextFunction)=>{
-    const user = req.body.user;
-    const productId = req.body.productId;
-    await user.addToCart(productId);
-
-    console.log('postCart: Añadimos al carro el producto: ',productId);
-    //Cart.addProduct(productId,1);
-    res.redirect('/cart');
-}
-
-export const deleteCartItem = async (req: Request,res: Response,next: NextFunction)=>{
-    const user = req.body.user;
-    const productId = req.body.productId;
-    const result = await user.deleteCartItem(productId);
-    
-    res.redirect('/cart');
-}
-
-
-export const postCartIncreaseItem = async (req: Request,res: Response,next: NextFunction)=>{
-    const user = req.body.user;
-    const productId = req.body.productId;
-    await user.addToCart(productId);
-    res.redirect('/cart');
+    res.status(200).json({ message: "Success", cartItems: items });
 };
 
-export const postCartDecreaseItem = async (req: Request,res: Response,next: NextFunction)=>{
-    const user = req.body.user;
+export const postCart = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body.user as User;
+    const productId = req.body.productId;
+    await user.addToCart(productId);
+    res.status(200).json({ message: "Product added to cart" });
+};
+
+export const deleteCartItem = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body.user as User;
+    const productId = req.body.productId;
+    await user.deleteCartItem(productId);
+    res.status(200).json({ message: "Product removed from cart" });
+};
+
+export const postCartIncreaseItem = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body.user as User;
+    const productId = req.body.productId;
+    await user.addToCart(productId);
+    res.status(200).json({ message: "Product quantity increased" });
+};
+
+export const postCartDecreaseItem = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body.user as User;
     const productId = req.body.productId;
     await user.decreaseCartItem(productId);
-    res.redirect('/cart');
+    res.status(200).json({ message: "Product quantity decreased" });
 };
-export const getOrders = async (req: Request,res: Response,next: NextFunction)=>{
-    const user = req.body.user;
-    const orders = await user.getOrders();
-    res.render('shop/orders', {
-        pageTitle:'Orders',
-        path:'/orders',
-        user: {name: user.name, DNI: user.DNI},
-        orders: orders,
-    });
-}
-export const getCheckOut = async (req: Request,res: Response,next: NextFunction)=>{
-    const user = req.body.user;
-    try{
-        const result = await user.addOrder();
-        result 
-            ? console.log("Orden añadida: ", result)
-            : console.log("Error en la order");
-    }catch(err){
-        console.log(err);
-    }finally{
-        res.redirect('/orders');
-    }
-}
 
-// export const getSaludo = (req: Request,res: Response,next: NextFunction)=>{
-//     res.render('prueba',{nombre: 'Ico'});
-// };
+export const getOrders = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body.user as User;
+    const orders = await user.getOrders();
+    res.status(200).json({ message: "Success", orders: orders });
+};
+
+export const getCheckOut = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body.user as User;
+    await user.addOrder();
+    res.status(200).json({ message: "Order placed successfully" });
+};

@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express";
+import express, { urlencoded, json } from "express";
 import * as dotenv from "dotenv";
 
 import { rutas } from "./utils/rutas.js";
@@ -6,6 +6,7 @@ import { adminRouter } from "./routes/adminRoutes.js";
 import { shopRouter } from "./routes/shopRoutes.js";
 import { collections, connectToDatabase } from "./services/databaseService.js";
 import { User } from "./models/User.js";
+import { eventRouter } from "./routes/eventsRoutes.js";
 
 console.log("-------------------------");
 console.log("Bienvenido a mi app");
@@ -31,6 +32,7 @@ connectToDatabase() //Conectar con la base de datos y crear un usuario
         app.set('view engine', 'ejs'); //El sistema de hacer las vistas es ejs.
         app.set('views', rutas.views); //Carpeta donde se encuentran las vistas.
         app.use(urlencoded({ extended: false })); //Middleware para procesar los campos que me envíen por HTTP
+        app.use(json()); //)
         //Urlencoded cuando nos llegue info de un formulario, lo que hace es que lo convierte en un objeto de JS
 
         app.use(express.static(rutas.public)); //Middleware para servir ficheros estáticos de public
@@ -47,12 +49,14 @@ connectToDatabase() //Conectar con la base de datos y crear un usuario
         //Controladores para responder a las peticiones por HTTP
 
         app.use('/admin', adminRouter); //Middleware para las rutas de admin
+        app.use('/', eventRouter); //Middleware para las rutas de shop
         app.use('/', shopRouter); //Middleware para las rutas de shop
 
 
         app.use('/', (request, response, next) => {
             console.log("Ruta no encontrada");
-            response.render('404', { pageTitle: "Error 404", path: "/404" });
+            //response.render('404', { pageTitle: "Error 404", path: "/404" });
+            response.status(404).json({message: "Error 404: Page not found"});
         }); //Middleware error;
 
 

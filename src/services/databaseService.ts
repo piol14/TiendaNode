@@ -24,7 +24,7 @@ export async function connectToDatabase()
     collections.products = db.collection<Product>(process.env.PRODUCT_COLLECTION!);
     collections.users = db.collection<User>(process.env.USER_COLLECTION!);
     collections.orders = db.collection<Order>(process.env.ORDER_COLLECTION!);
-    collections.events = db.collection<Events>(process.env.ORDER_COLLECTION!);
+    collections.events = db.collection<Events>(process.env.EVENTS_COLLECTION!);
     console.log(`Hemos conectado a la base de datos: ${db.databaseName} y la collecion ${collections.products.collectionName} `);
    console.log(`Hemos conectado a la base de datos: ${db.databaseName} y la collecion ${collections.users.collectionName} `);
 }
